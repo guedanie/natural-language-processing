@@ -40,7 +40,6 @@ def get_blog_articles():
     # Entertainment
 #The end product of this should be a function named get_news_articles that returns a list of dictionaries, where each dictionary has this shape:
 
-
 def get_url(topic):
     url = f"https://inshorts.com/en/read/{topic}"
     headers = {'User-Agent': 'Codeup Bayes Data Science'} # codeup.com doesn't like our default user-agent
@@ -67,7 +66,7 @@ def get_article_info(new_urls, topic):
         body = soup.select("body > div.container > div > div.card-stack > div > div > div.news-card-content.news-right-box > div:nth-child(1)")[0].text
         author = soup.find("span", class_ = "author").text
         date_published = soup.find("span", class_="time")["content"]
-        news.append({"title": title, "author":author, "topic": topic, "article": body, "date_published": date_published})
+        news.append({"title": title, "author": author, "topic": topic, "article": body, "date_published": date_published, "page_url": new_url})
     return news
     
 def get_news_articles(topics = []):
@@ -75,5 +74,6 @@ def get_news_articles(topics = []):
     for topic in topics:
         new_urls = get_url(topic)
         news = get_article_info(new_urls, topic)
-        all_news.append({topic: news})
+        all_news.append(news)
+    all_news = sum(all_news, [])
     return all_news
