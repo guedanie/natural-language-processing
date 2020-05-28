@@ -97,7 +97,7 @@ def get_article_info(new_urls, topic):
         body = soup.select("body > div.container > div > div.card-stack > div > div > div.news-card-content.news-right-box > div:nth-child(1)")[0].text
         author = soup.find("span", class_ = "author").text
         date_published = soup.find("span", class_="time")["content"]
-        news.append({"title": title, "author": author, "topic": topic, "article": body, "date_published": date_published, "page_url": new_url})
+        news.append({"title": title, "author": author, "topic": topic, "content": body, "date_published": date_published, "page_url": new_url})
     return news
     
 def get_news_articles(topics = []):
