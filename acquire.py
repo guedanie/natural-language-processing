@@ -29,6 +29,37 @@ def get_blog_articles():
         websites.append({"title": title, "content": text, "date_published": date})
     return websites
 
+def get_all_urls():
+    url = "https://codeup.com/resources/#blog"
+
+    headers = {'User-Agent': 'Codeup Bayes Data Science'} # codeup.com doesn't like our default user-agent
+    response = get(url, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    urls = []
+    for link in soup.find_all('a', class_='jet-listing-dynamic-link__link'):
+        urls.append(link["href"])
+    urls = pd.Series(urls)
+    urls = urls.iloc[58:257].unique()
+    return urls
+
+def get_blog_articles_bonus(urls):
+    websites = []
+    for i in urls:
+        headers = {'User-Agent': 'Codeup Bayes Data Science'} # codeup.com doesn't like our default user-agent
+        response = get(i, headers=headers)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        title = soup.title.text
+        text = soup.find('div', class_='jupiterx-post-content clearfix').text
+        date = soup.select("header > ul > li.jupiterx-post-meta-date.list-inline-item > time")
+        websites.append({"title": title, "content": text, "date_published": date})
+    return websites   
+
+def get_all_blog_articles():
+    urls = get_all_urls()
+    websites = get_blog_articles_bonus(urls)
+    return websites
+
+
 # News Articles
 
 # We will now be scraping text data from inshorts, a website that provides a brief overview of many different topics.
