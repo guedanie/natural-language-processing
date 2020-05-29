@@ -58,17 +58,29 @@ def lemmatize(tokenized_text):
     return lemmas, article_lemmatized
     
 
-def remove_stopwords(lemmatized_text):
-    '''
-    Helper function that accepts text, and retunrs that text after removing all the stopwords
-    '''
-    stopword_list = stopwords.words('english')
-    stopword_list.remove('no')
-    stopword_list.remove('not')
     
+def remove_stopwords(lemmatized_text, extra_words = [], words_remove=[]):
+    '''
+    Helper function that accepts text, and retunrs that text after removing all the stopwords.
+    Takes two additional arguments. 
+    
+    `extra_words` :a list of extra words to include in the list of stop words
+    `words_remove`: a list of words to remove from the list of stop words
+    
+    '''
+
+    stopword_list = stopwords.words('english')
+
+    for item in words_remove:
+        stopword_list.remove(item)
+        
+    for item in extra_words:
+        stopword_list.append(item)
+
     words = lemmatized_text.split()
     filtered_words = [w for w in words if w not in stopword_list]
     article_without_stopwords = ' '.join(filtered_words)
+    
     return article_without_stopwords
 
 def prep_article(article, text_key):
