@@ -59,7 +59,7 @@ def lemmatize(tokenized_text):
     
 
     
-def remove_stopwords(lemmatized_text, extra_words = [], words_remove=[]):
+def remove_stopwords(lemmatized_text, extra_words, words_remove):
     '''
     Helper function that accepts text, and retunrs that text after removing all the stopwords.
     Takes two additional arguments. 
@@ -83,7 +83,7 @@ def remove_stopwords(lemmatized_text, extra_words = [], words_remove=[]):
     
     return article_without_stopwords
 
-def prep_article(article, text_key):
+def prep_article(article, text_key, extra_words, words_remove):
     '''
     First main function that takes a single article, and returns an updated dictionary with all the prep done
     '''
@@ -93,7 +93,7 @@ def prep_article(article, text_key):
     tokenized_text = tokenize(basic_clean_text)
     stems, stemmed_text = stem(tokenized_text)
     stem_lemmatize, lemmatized_text = lemmatize(tokenized_text)
-    cleaned_text = remove_stopwords(lemmatized_text)
+    cleaned_text = remove_stopwords(lemmatized_text, extra_words, words_remove)
     
     article.update({"stemmed": stemmed_text, "lemmatized": lemmatized_text, "clean": cleaned_text})
     
@@ -101,10 +101,10 @@ def prep_article(article, text_key):
     
 # ____Main Prep Function____#
 
-def prepare_article_data(articles):
+def prepare_article_data(articles, text_key = "content", extra_words = [], words_remove=[]):
     '''
     Main prep function that takes a list of dictionaries with content and returns the list, with updated dictionaries after data prep.
     '''
     for i in range(len(articles)):
-         prep_article(articles[i], text_key = "content")
+         prep_article(articles[i], text_key, extra_words, words_remove)
     return articles
