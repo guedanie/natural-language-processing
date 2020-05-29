@@ -38,8 +38,8 @@ def get_all_urls():
     urls = []
     for link in soup.find_all('a', class_='jet-listing-dynamic-link__link'):
         urls.append(link["href"])
-    urls = pd.Series(urls)
-    urls = urls.iloc[58:257].unique()
+    # urls = pd.Series(urls)
+    # urls = urls.iloc[58:257].unique()
     return urls
 
 def get_blog_articles_bonus(urls):
